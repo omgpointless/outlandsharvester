@@ -12,11 +12,10 @@ Please do not distribute outside of the guild!!!
 
 Do note that this macro puts requirements on you to have certain skills. I recommend having 2 dedicated harvesters focusing only on the important part. The harvest skill and the rest is utility.  
 
-All the skill requirements can easily be trained at NPC vendors. And 60 magery can quickly be trained in NPD by casting Lighting on anything (even yourself).  
+All the skill requirements can easily be trained at NPC vendors. And 60 magery can quickly be trained in NPD by casting Lightning on anything (even yourself).  
+I really recommend using bonded pets, but it's not a requirement.
 
-The requirement of bonded pets however is an extra barrier that makes it complex. This is simply because I strongly believe it to be the best way, with least headache and downtimes.  
-
-IF YOU CANT BOND PETS YOURSELF GET IN TOUCH WITH POINTLESS (ELAN DEFIAC, ILL DEFIAC, MADI DEFIAC) AND HE WILL HOOK YOU UP NO PROBLEM! OK? SWEET.
+*IF YOU CANT BOND PETS YOURSELF GET IN TOUCH WITH POINTLESS (ELAN DEFIAC, ILL DEFIAC, MADI DEFIAC) AND HE WILL HOOK YOU UP NO PROBLEM! OK? SWEET.*
 
 ## Requirements
 
@@ -29,11 +28,15 @@ IF YOU CANT BOND PETS YOURSELF GET IN TOUCH WITH POINTLESS (ELAN DEFIAC, ILL DEF
 *70 Camping, if mining*
 *I also recommend having meditation for faster recovery*
 
+### Recommended
+
 - 3-5 x Slots Bonded Pets (Recommend Mucks at least at lvl 6 for regen, but it depends on where you mark as well. I ran it with 1xColossal Frog 1xMuck and 1xFamiliar too)
 
 ## Setup
 
 This is the most time consuming part. If you already have the resources, changing your character to the required build is very little effort. Try to spend a little extra time on finding good spots. You may find that you over time start replacing some nodes where you often come home early.
+
+### 1,2 ... 8
 
 1. Mark runes to fill up  your tome(s). Look for good spots. Anything with multiple of that resource around you. If trees, standing in the middle of alot of trees. If mining, having mountain in all directions.  
 
