@@ -2,11 +2,21 @@
 
 ## Author
 
-Created by pointless for BB.
+Created by pointless for his LJ and miner, shared to BB.
 
 Please do not distribute outside of the guild.  
 Please do not distribute outside of the guild!  
 Please do not distribute outside of the guild!!!  
+
+## Disclaimer
+
+Do note that this macro puts requirements on you to have certain skills. I recommend having 2 dedicated harvesters focusing only on the important part. The harvest skill and the rest is utility.  
+
+All the skill requirements can easily be trained at NPC vendors. And 60 magery can quickly be trained in NPD by casting Lighting on anything (even yourself).  
+
+The requirement of bonded pets however is an extra barrier that makes it complex. This is simply because I strongly believe it to be the best way, with least headache and downtimes.  
+
+IF YOU CANT BOND PETS YOURSELF GET IN TOUCH WITH POINTLESS (ELAN DEFIAC, ILL DEFIAC, MADI DEFIAC) AND HE WILL HOOK YOU UP NO PROBLEM! OK? SWEET.
 
 ## Requirements
 
