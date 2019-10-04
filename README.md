@@ -27,19 +27,19 @@ This is the most time consuming part. If you already have the resources, changin
 
 1. Mark runes to fill up  your tome(s). Look for good spots. Anything with multiple of that resource around you. If trees, standing in the middle of alot of trees. If mining, having mountain in all directions.  
 
-- Add the scripts in this repository. **Name them exactly as mine, this is very important**
+2. Add the scripts in this repository. **Name them exactly as mine, this is very important**
 
-- Make sure you have one bag in your bank with alot of regs (bp, mr, bm), tools and bandages.
+3. Make sure you have one bag in your bank with alot of regs (bp, mr, bm), tools and bandages.
 
-- Make sure you have one bag in your bank where ore will be stored.
+4. Make sure you have one bag in your bank where ore will be stored.
 
-- Make sure to carry either a recall rune to a bank, or a blessed runebook with default set to bank. (Personally I don't have enough runebooks, I just mark a bunch of runes as backup)
+5. Make sure to carry either a recall rune to a bank, or a blessed runebook with default set to bank. (Personally I don't have enough runebooks, I just mark a bunch of runes as backup)
 
-- Go to a bank of your choice.
+6. Go to a bank of your choice.
 
-- Make sure you have **ONE tool in your backpack**. Either hatchet or pickaxe. This will determine what mode the harvester is in.
+7. Make sure you have **ONE tool in your backpack**. Either hatchet or pickaxe. This will determine what mode the harvester is in.
 
-- Start script *pBBHarvesterSetup* and follow instructions in game.
+8. Start script *pBBHarvesterSetup* and follow instructions in game.
 
 **Happy farming!**  
 *DM me if you have any issues*
