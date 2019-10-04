@@ -1,0 +1,94 @@
+// ---------------------------------
+// pointless recall harvester 0.0.1
+//
+// Don't AFK, look out for Owyn, say hello to people.
+// Be a positive change to recall miners.
+//
+// Made for BB. Please keep it exclusive to BB.
+//
+// First time? Run pBBHarvesterSetup first.
+//
+// **********************************
+// WARNING. You shall not pass.
+// **********************************
+if not @timerexists 'SwingTimer'
+  @createtimer 'SwingTimer'
+else
+  @settimer 'SwingTimer' 0
+endif
+msg "all guard me"
+pause 2800
+@clearjournal
+while not @injournal 'You do not see any harvestable' 'system'
+  // We only care about these right now. Need review.
+  //getenemy 'any' returns followers as well.
+  @getenemy 'murderer' 'criminal' 'humanoid'
+  // Equip new pickaxe if needed.
+  if not @findobject 'righthand' and not @findobject 'lefthand'
+    sysmsg "[pbb] Equipping new tool" 11
+    for 0 to 'ToolTypes'
+      if @findtype 'ToolTypes[]' 'any' 'backpack'
+        @setalias 'HarvestTool' 'found'
+      endif
+    endfor
+    equipitem 'HarvestTool' 1
+    pause 600
+  endif
+  @settimer 'SwingTimer' 0
+  @clearjournal
+  @useobject 'HarvestTool'
+  waitfortarget 3000
+  target! 'self'
+  // todo look for done msg?
+  while not @injournal 'You do not see any harvestable' 'system'
+    if @injournal 'ore' 'system'
+      break
+    elseif @injournal 'You hack' 'system'
+      break
+    elseif @injournal 'chop' 'system'
+      break
+    endif
+    if murderer enemy or criminal enemy
+      playsound 1088
+      headmsg "PK, RUN!" 38
+      break
+    endif
+    if @injournal "Now Tracking" system
+      playsound 1069
+      msg "all guard me"
+      headmsg "PK, RUN!" 38
+      break
+    endif
+    if diffhits > 0
+      playsound 1088
+      headmsg "You're under attack" 38
+      msg "all guard me"
+      break
+    endif
+    while @ingump any "Captcha"
+      headmsg "Captcha!" 29
+      sysmsg "[pbb] Owyn is watching!?" 38
+      playsound 1095
+      pause 5000
+    endwhile
+  endwhile
+  if murderer enemy
+    break
+  endif
+endwhile
+headmsg "Leaving node"
+if skill 'Animal Taming' > 0
+  msg "all follow me"
+endif
+cast "Recall"
+waitfortarget 15000
+if not findalias 'HomeRune'
+  if @findtype 0x1f14 'any' 'backpack'
+    setalias 'HomeRune' 'found'
+    targettype! 'found'
+  endif
+else
+  target! 'HomeRune'
+endif
+pause 1500
+playmacro "pBBHarvester"

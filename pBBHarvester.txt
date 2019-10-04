@@ -1,0 +1,1026 @@
+// ---------------------------------
+// pointless recall harvester 0.0.1
+//
+// Don't AFK, look out for Owyn, say hello to people.
+// Be a positive change to recall miners.
+//
+// Made for BB. Please keep it exclusive to BB.
+//
+// First time? Run pBBHarvesterSetup first.
+//
+// **********************************
+// WARNING. You shall not pass.
+// **********************************
+@removelist 'ResourceTypes'
+@createlist 'ResourceTypes'
+@removelist 'ToolTypes'
+@createlist 'ToolTypes'
+@removelist 'RestockResources'
+@createlist 'RestockResources'
+@removelist 'NodeList'
+@createlist 'NodeList'
+// ---------------------------------
+// Set up tools and resource types depending on mode.
+// ---------------------------------
+if findalias 'HARVEST_MODE_LJ'
+  @pushlist 'ResourceTypes' 0x1bdd // Logs
+  @pushlist 'ToolTypes' 0xf44 // Hatchet
+elseif findalias 'HARVEST_MODE_MINING'
+  @pushlist 'ResourceTypes' 0x19b9 // Ore
+  @pushlist 'ToolTypes' 0xe86 // pickaxe
+else
+  sysmsg "[pbb] You didn't configure harvest mode!" 38
+  playsound 38
+  stop
+endif
+// ---------------------------------
+// Needed resources for recalls and healing
+// ---------------------------------
+if skill 'Magery' >= 60
+  @pushlist 'RestockResources' 0xf7a // BP
+  @pushlist 'RestockResources' 0xf7b // BM
+  @pushlist 'RestockResources' 0xf86 // MR
+else
+  sysmsg '[pbb] Please get your magery to 60 before using this harvester.' 38
+  stop
+endif
+if skill 'Healing' > 0
+  @pushlist 'RestockResources' 0xe21 // Bandages
+endif
+msg 'bank'
+// ---------------------------------
+// Move ore to storage container
+// This is intentionally done risky with a low timer.
+// Recall spell duration should be enough of a buffer.
+// ---------------------------------
+if findalias 'StorageContainer'
+  for 0 to 'ResourceTypes'
+    if @findtype 'ResourceTypes[]' 'any' 'backpack'
+      @moveitem 'found' 'StorageContainer' 65535 65535 0
+      while @findtype 'ResourceTypes[]' 'any' 'backpack'
+        @moveitem 'found' 'StorageContainer' 65535 65535 0
+      endwhile
+    endif
+  endfor
+else
+  headmsg "Couldn't find storage container!"
+  stop
+endif
+// -------------------------------
+// Restock resources and tools
+// -------------------------------
+if findalias 'RestockContainer'
+  // Restock all required regs
+  for 0 to 'RestockResources'
+    if @counttype 'RestockResources[]' 'any' 'backpack' < 6
+      if @movetype 'RestockResources[]' 'RestockContainer' 'backpack' 0 0 0 'any' 12
+        headmsg "Restocking"
+        pause 100
+      else
+        headmsg "Out of a restock resource. Check bag!" 38
+        playsound 38
+        stop
+      endif
+    endif
+  endfor
+  // Checking that we have enough tools on us for break during trip.
+  for 0 to 'ToolTypes'
+    if @counttype 'ToolTypes[]' 'any' 'backpack' < 2
+      // Get tool from storage container.
+      if @movetype 'ToolTypes[]' 'RestockContainer' 'backpack'
+        sysmsg "Restocking tool"
+        pause 100
+      else
+        headmsg "Out of tools!" 38
+        playsound 38
+        stop
+      endif
+    endif
+  endfor
+else
+  headmsg "Could not find the restock container!"
+  stop
+endif
+if not findalias 'HomeRune'
+  sysmsg "[pbb] Couldn't find what I'm supposed to recall home from" 38
+  stop
+endif
+// -------------------------------
+// Replenish mana to make sure we can do two trips fast for safety.
+// -------------------------------
+while mana < 20
+  if skill 'Meditation' > 0
+    headmsg "Meditating..."
+    useskill "Meditation"
+    pause 2000
+  endif
+endwhile
+while hits < 100
+  if skill 'Healing' > 0 and @counttype 0xe21 'any' 'backpack' > 1
+    headmsg "Bandaging..." 38
+    usetype 0xe21
+    waitfortarget 3000
+    target! 'self'
+    @clearjournal
+    while not @injournal 'You finish' 'system'
+      pause 1000
+    endwhile
+  endif
+endwhile
+// -------------------------------
+// BIG SHITTY IF STATEMENT FOR TOME NODES
+// -------------------------------
+// A
+// --------------------------------
+if @findalias 'RunetomeA'
+  if not @findalias 'A1'
+    @setalias 'A1' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 200
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A2'
+    @setalias 'A2' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 201
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'A3'
+    @setalias 'A3' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 202
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A4'
+    @setalias 'A4' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 203
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'A5'
+    @setalias 'A5' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 204
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A6'
+    @setalias 'A6' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 205
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'A7'
+    @setalias 'A7' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 206
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A8'
+    @setalias 'A8' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 207
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'A9'
+    @setalias 'A9' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 208
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A10'
+    @setalias 'A10' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 209
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'A11'
+    @setalias 'A11' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 210
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A12'
+    @setalias 'A12' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 211
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'A13'
+    @setalias 'A13' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 212
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A14'
+    @setalias 'A14' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 213
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'A15'
+    @setalias 'A15' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 214
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A16'
+    @setalias 'A16' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 215
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'A17'
+    @setalias 'A17' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 216
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A18'
+    @setalias 'A18' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 217
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'A19'
+    @setalias 'A19' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 218
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A20'
+    @setalias 'A20' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 219
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'A21'
+    @setalias 'A21' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 220
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A22'
+    @setalias 'A22' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 221
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'A23'
+    @setalias 'A23' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 222
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A24'
+    @setalias 'A24' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 223
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'A25'
+    @setalias 'A25' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 224
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'A26'
+    @setalias 'A26' 'backpack'
+    @useobject 'RunetomeA'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 225
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  else
+    @setalias 'OUT_OF_SPOTS' 'backpack'
+    if not @findalias 'RunetomeB'
+      headmsg "Out of spots!!" 34
+    endif
+  endif
+  if not @findalias 'OUT_OF_SPOTS'
+    playmacro "pBBHarvest"
+  endif
+endif
+@unsetalias 'OUT_OF_SPOTS'
+// --------------------------------
+// B
+// --------------------------------
+if @findalias 'RunetomeB'
+  if not @findalias 'B1'
+    @setalias 'B1' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 200
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B2'
+    @setalias 'B2' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 201
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'B3'
+    @setalias 'B3' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 202
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B4'
+    @setalias 'B4' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 203
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'B5'
+    @setalias 'B5' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 204
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B6'
+    @setalias 'B6' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 205
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'B7'
+    @setalias 'B7' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 206
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B8'
+    @setalias 'B8' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 207
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'B9'
+    @setalias 'B9' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 208
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B10'
+    @setalias 'B10' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 209
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'B11'
+    @setalias 'B11' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 210
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B12'
+    @setalias 'B12' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 211
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'B13'
+    @setalias 'B13' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 212
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B14'
+    @setalias 'B14' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 213
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'B15'
+    @setalias 'B15' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 214
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B16'
+    @setalias 'B16' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 215
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'B17'
+    @setalias 'B17' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 216
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B18'
+    @setalias 'B18' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 217
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'B19'
+    @setalias 'B19' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 218
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B20'
+    @setalias 'B20' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 219
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'B21'
+    @setalias 'B21' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 220
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B22'
+    @setalias 'B22' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 221
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'B23'
+    @setalias 'B23' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 222
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B24'
+    @setalias 'B24' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 223
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'B25'
+    @setalias 'B25' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 224
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'B26'
+    @setalias 'B26' 'backpack'
+    @useobject 'RunetomeB'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 225
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  else
+    @setalias 'OUT_OF_SPOTS' 'backpack'
+    if not @findalias 'RunetomeC'
+      headmsg "Out of spots tome C" 34
+    endif
+  endif
+  if not @findalias 'OUT_OF_SPOTS'
+    playmacro "pBBHarvest"
+  endif
+endif
+@unsetalias 'OUT_OF_SPOTS'
+// --------------------------------
+// A
+// --------------------------------
+if @findalias 'RunetomeC'
+  if not @findalias 'C1'
+    @setalias 'C1' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 200
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C2'
+    @setalias 'C2' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 201
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'C3'
+    @setalias 'C3' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 202
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C4'
+    @setalias 'C4' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 203
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'C5'
+    @setalias 'C5' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 204
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C6'
+    @setalias 'C6' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 205
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'C7'
+    @setalias 'C7' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 206
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C8'
+    @setalias 'C8' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 207
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'C9'
+    @setalias 'C9' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 208
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C10'
+    @setalias 'C10' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 209
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'C11'
+    @setalias 'C11' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 210
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C12'
+    @setalias 'C12' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 211
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'C13'
+    @setalias 'C13' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 212
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C14'
+    @setalias 'C14' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 213
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'C15'
+    @setalias 'C15' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 214
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C16'
+    @setalias 'C16' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 215
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'C17'
+    @setalias 'C17' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 216
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C18'
+    @setalias 'C18' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 217
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'C19'
+    @setalias 'C19' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 218
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C20'
+    @setalias 'C20' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 219
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'C21'
+    @setalias 'C21' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 220
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C22'
+    @setalias 'C22' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 221
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'C23'
+    @setalias 'C23' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 222
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C24'
+    @setalias 'C24' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 223
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'C25'
+    @setalias 'C25' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 224
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'C26'
+    @setalias 'C26' 'backpack'
+    @useobject 'RunetomeC'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 225
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  else
+    @setalias 'OUT_OF_SPOTS' 'backpack'
+    if not @findalias 'RunetomeD'
+      headmsg "Out of spots tome C" 34
+    endif
+  endif
+  if not @findalias 'OUT_OF_SPOTS'
+    playmacro "pBBHarvest"
+  endif
+endif
+@unsetalias 'OUT_OF_SPOTS'
+// --------------------------------
+// D
+// --------------------------------
+if @findalias 'RunetomeD'
+  if not @findalias 'D1'
+    @setalias 'D1' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 200
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D2'
+    @setalias 'D2' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 201
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'D3'
+    @setalias 'D3' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 202
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D4'
+    @setalias 'D4' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 203
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'D5'
+    @setalias 'D5' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 204
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D6'
+    @setalias 'D6' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 205
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'D7'
+    @setalias 'D7' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 206
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D8'
+    @setalias 'D8' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 207
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'D9'
+    @setalias 'D9' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 208
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D10'
+    @setalias 'D10' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 209
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'D11'
+    @setalias 'D11' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 210
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D12'
+    @setalias 'D12' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 211
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'D13'
+    @setalias 'D13' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 212
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D14'
+    @setalias 'D14' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 213
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'D15'
+    @setalias 'D15' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 214
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D16'
+    @setalias 'D16' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 215
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'D17'
+    @setalias 'D17' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 216
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D18'
+    @setalias 'D18' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 217
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'D19'
+    @setalias 'D19' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 218
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D20'
+    @setalias 'D20' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 219
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'D21'
+    @setalias 'D21' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 220
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D22'
+    @setalias 'D22' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 221
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'D23'
+    @setalias 'D23' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 222
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D24'
+    @setalias 'D24' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 223
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  elseif not @findalias 'D25'
+    @setalias 'D25' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 224
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 10
+  elseif not @findalias 'D26'
+    @setalias 'D26' 'backpack'
+    @useobject 'RunetomeD'
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 225
+    waitforgump 0x9f5976b 15000
+    replygump 0x9f5976b 20
+  else
+    @setalias 'OUT_OF_SPOTS' 'backpack'
+    headmsg "Out of spots!!!" 34
+    playsound 38
+  endif
+  if not @findalias 'OUT_OF_SPOTS'
+    playmacro "pBBHarvest"
+  endif
+endif
+@unsetalias 'OUT_OF_SPOTS'
+sysmsg "[pbb] Ran out of spots! :(" 38
+sysmsg "[pbb] Resetting nodes and restarting." 38
+//
+@unsetalias 'A1'
+@unsetalias 'A2'
+@unsetalias 'A3'
+@unsetalias 'A4'
+@unsetalias 'A5'
+@unsetalias 'A6'
+@unsetalias 'A7'
+@unsetalias 'A8'
+@unsetalias 'A9'
+@unsetalias 'A10'
+@unsetalias 'A11'
+@unsetalias 'A12'
+@unsetalias 'A13'
+@unsetalias 'A14'
+@unsetalias 'A15'
+@unsetalias 'A16'
+@unsetalias 'A17'
+@unsetalias 'A18'
+@unsetalias 'A19'
+@unsetalias 'A20'
+@unsetalias 'A21'
+@unsetalias 'A22'
+@unsetalias 'A23'
+@unsetalias 'A24'
+@unsetalias 'A25'
+@unsetalias 'A26'
+@unsetalias 'B1'
+@unsetalias 'B2'
+@unsetalias 'B3'
+@unsetalias 'B4'
+@unsetalias 'B5'
+@unsetalias 'B6'
+@unsetalias 'B7'
+@unsetalias 'B8'
+@unsetalias 'B9'
+@unsetalias 'B10'
+@unsetalias 'B11'
+@unsetalias 'B12'
+@unsetalias 'B13'
+@unsetalias 'B14'
+@unsetalias 'B15'
+@unsetalias 'B16'
+@unsetalias 'B17'
+@unsetalias 'B18'
+@unsetalias 'B19'
+@unsetalias 'B20'
+@unsetalias 'B21'
+@unsetalias 'B22'
+@unsetalias 'B23'
+@unsetalias 'B24'
+@unsetalias 'B25'
+@unsetalias 'B26'
+@unsetalias 'C1'
+@unsetalias 'C2'
+@unsetalias 'C3'
+@unsetalias 'C4'
+@unsetalias 'C5'
+@unsetalias 'C6'
+@unsetalias 'C7'
+@unsetalias 'C8'
+@unsetalias 'C9'
+@unsetalias 'C10'
+@unsetalias 'C11'
+@unsetalias 'C12'
+@unsetalias 'C13'
+@unsetalias 'C14'
+@unsetalias 'C15'
+@unsetalias 'C16'
+@unsetalias 'C17'
+@unsetalias 'C18'
+@unsetalias 'C19'
+@unsetalias 'C20'
+@unsetalias 'C21'
+@unsetalias 'C22'
+@unsetalias 'C23'
+@unsetalias 'C24'
+@unsetalias 'C25'
+@unsetalias 'C26'
+@unsetalias 'D1'
+@unsetalias 'D2'
+@unsetalias 'D3'
+@unsetalias 'D4'
+@unsetalias 'D5'
+@unsetalias 'D6'
+@unsetalias 'D7'
+@unsetalias 'D8'
+@unsetalias 'D9'
+@unsetalias 'D10'
+@unsetalias 'D11'
+@unsetalias 'D12'
+@unsetalias 'D13'
+@unsetalias 'D14'
+@unsetalias 'D15'
+@unsetalias 'D16'
+@unsetalias 'D17'
+@unsetalias 'D18'
+@unsetalias 'D19'
+@unsetalias 'D20'
+@unsetalias 'D21'
+@unsetalias 'D22'
+@unsetalias 'D23'
+@unsetalias 'D24'
+@unsetalias 'D25'
+@unsetalias 'D26'
+replay

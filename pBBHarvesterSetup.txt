@@ -1,0 +1,109 @@
+// ---------------------------------
+// pointless recall harvester setup 0.0.1
+//
+// Don't AFK, look out for Owyn, say hello to people.
+// Be a positive change to recall miners.
+//
+// Made for BB. Please keep it exclusive to BB.
+//
+// **********************************
+// WARNING. You shall not pass.
+// **********************************
+// CLEANUP
+@unsetalias 'HARVEST_MODE_LJ'
+@unsetalias 'HARVEST_MODE_MINING'
+sysmsg "[pbb] Checking skills" 71
+if skill 'Magery' < 60
+  sysmsg "[pbb] Pretty sure I said 60 magery you lazy bastard." 38
+  stop
+else
+  sysmsg "[pbb] Magery OK" 71
+endif
+if not skill 'Healing' > 0
+  sysmsg "[pbb] You will need healing for safety." 38
+  stop
+else
+  sysmsg "[pbb] Healing OK" 71
+endif
+if skill 'Animal Taming' < 50 or skill 'Animal Lore' < 50
+  sysmsg "[pbb] You need defense. Get 50 taming/lore, get bonded pets." 38
+  stop
+else
+  sysmsg "[pbb] Taming/Lore OK" 71
+endif
+if followers < 3
+  sysmsg "[pbb] I strongly recommend more followers. But OK." 39
+endif
+sysmsg "[pbb] Setting up harvester..." 11
+pause 600
+sysmsg "[pbb] Make sure you are at a bank or in your courtyard near containers." 11
+pause 600
+if @findtype 0xf44 'any' 'backpack'
+  sysmsg "[pbb] Setting harvester to lumberjack." 81
+  @setalias 'HARVEST_MODE_LJ' 'self'
+elseif @findtype 0xe86 'any' 'backpack'
+  sysmsg "[pbb] Setting harvester to mining." 81
+  if skill 'Camping' < 70
+    sysmsg "[pbb] Please get 70 Camping. Good nodes can get 400+, 70 will give you 500 weight capacity"
+    stop
+  else
+    sysmsg "[pbb] Got camping for mining!" 71
+  endif
+  @setalias 'HARVEST_MODE_MINING' 'self'
+else
+  sysmsg "[pbb] Couldn't determine harvest mode." 38
+  sysmsg "[pbb] Place either a hatcher or a pickaxe in your backpack and start again." 11
+  stop
+endif
+msg "bank"
+pause 600
+sysmsg "[pbb] Please select your restock container." 91
+promptalias 'RestockContainer'
+useobject 'RestockContainer'
+pause 600
+sysmsg "[pbb] Please select your storage container." 91
+promptalias 'StorageContainer'
+useobject 'StorageContainer'
+pause 600
+useobject 'backpack'
+paperdoll 'self'
+pause 600
+sysmsg "[pbb] Please select your target to recall home from." 91
+promptalias 'HomeRune'
+// Look for rune tomes
+if @findtype 0x71af 'any' 'bank'
+  sysmsg "[pbb] Setting up rune tomes..." 11
+  sysmsg "[pbb] Please select Rune Tome A" 91
+  promptalias 'RunetomeA'
+  pause 600
+  sysmsg "[pbb] Please select Rune Tome B (Or ESC for no more tomes)" 91
+  promptalias 'RunetomeB'
+  pause 600
+  sysmsg "[pbb] Please select Rune Tome C (Or ESC for no more tomes)" 91
+  promptalias 'RunetomeC'
+  pause 600
+  sysmsg "[pbb] Please select Rune Tome D (Or ESC for no tomes)" 91
+  promptalias 'RunetomeD'
+  pause 600
+else
+  sysmsg "[pbb] Couldn't find any rune tomes in bank." 38
+  stop
+endif
+pause 600
+sysmsg "[pbb] All configured! :)" 78
+pause 600
+sysmsg "[pbb] Make sure not to AFK." 78
+pause 600
+sysmsg "[pbb] Watch out for PKs and Owyn." 78
+pause 600
+sysmsg "[pbb] Ain't my fault if you a slacker that end up in jail!" 78
+sysmsg "" 78
+sysmsg "" 78
+sysmsg "" 78
+pause 600
+sysmsg "[pbb] Harvester will start in 5 seconds..." 91
+pause 5000
+sysmsg "[pbb] Happy farming. <3" 78
+useobject 'RestockContainer'
+useobject 'backpack'
+playmacro "pBBHarvester"

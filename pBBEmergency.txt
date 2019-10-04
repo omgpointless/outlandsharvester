@@ -1,0 +1,10 @@
+cast "Recall"
+waitfortarget 15000
+if not findalias 'HomeRune'
+  if @findtype 0x1f14 'any' 'backpack'
+    setalias 'HomeRune' 'found'
+    targettype! 'found'
+  endif
+else
+  target! 'HomeRune'
+endif
