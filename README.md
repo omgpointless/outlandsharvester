@@ -1,17 +1,18 @@
-# Recall Harvester
+# pBB Recall Harvester
 
-#### Author
-Created by pointless for BB. 
- 
+## Author
+
+Created by pointless for BB.
+
 Please do not distribute outside of the guild.  
 Please do not distribute outside of the guild!  
 Please do not distribute outside of the guild!!!  
 
-#### Requirements
+## Requirements
 
 - 1xFully Marked Rune Tome (in bank, supports up to four)
 
-A harvester with:  
+- A harvester with:  
 *50 Animal Lore/Taming*  
 *>1 Healing*  
 *60 Magery*  
@@ -20,7 +21,7 @@ A harvester with:
 
 - 3-5 x Slots Bonded Pets (Recommend Mucks at least at lvl 6 for regen, but it depends on where you mark as well. I ran it with 1xColossal Frog 1xMuck and 1xFamiliar too)
 
-#### Setup
+## Setup
 
 This is the most time consuming part. If you already have the resources, changing your character to the required build is very little effort. Try to spend a little extra time on finding good spots. You may find that you over time start replacing some nodes where you often come home early.
 
@@ -43,6 +44,8 @@ This is the most time consuming part. If you already have the resources, changin
 **Happy farming!**  
 *DM me if you have any issues*
 
-#### Hints and tips
+## Hints and tips
 
-- TODO
+- If you log out mid session, remember to open the restock container once when you log in again. Or you might get stopped by missing regs.
+
+- Set a hotkey to *pBBHarvester*, set a hotkey for "Stop macro" and set a hotkey for utility script pBBEmergency. I use F1 and F2 and Pause for stop.
