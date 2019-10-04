@@ -59,3 +59,7 @@ This is the most time consuming part. If you already have the resources, changin
 - If you log out mid session, remember to open the restock container once when you log in again. Or you might get stopped by missing regs.
 
 - Set a hotkey to *pBBHarvester*, set a hotkey for "Stop macro" and set a hotkey for utility script pBBEmergency. I use F1 and F2 and Pause for stop.
+
+- Use the highest tier pickaxe possible. I did/will do Iron->Gold->Agapite->Verite->Valo. You want success rates.
+
+- If you have Fortune this helps success rates and in turn better *oph*
