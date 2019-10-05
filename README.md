@@ -2,7 +2,7 @@
 
 ## About
 
-Created by pointless for his LJ and miner, shared to BB.
+Created by pointless for his lumberjack and miner, shared to BB.
 
 Supposed to be a harvester that requires minimum human intervention (other than captcha, and the occasional emergency recalls). I recommend that you use my recommended skills, but if you can't then just to make sure to mark SAFE locations without aggressive spawns.
 
