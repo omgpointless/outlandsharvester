@@ -112,8 +112,10 @@ while mana < 20
   if skill 'Meditation' > 0
     headmsg "Meditating..."
     useskill "Meditation"
-    pause 2000
+  else
+    sysmsg "Waiting for 20 mana for safety reasons... You should get meditation" 11
   endif
+  pause 2000
 endwhile
 while hits < 100
   if skill 'Healing' > 0 and @counttype 0xe21 'any' 'backpack' > 1

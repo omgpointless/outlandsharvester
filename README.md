@@ -1,36 +1,27 @@
 # pBB Recall Harvester
 
-## Author
+## About
 
 Created by pointless for his LJ and miner, shared to BB.
 
-Please do not distribute outside of the guild.  
-Please do not distribute outside of the guild!  
+Supposed to be a harvester that requires minimum human intervention (other than captcha, and the occasional emergency recalls). I recommend that you use my recommended skills, but if you can't then just to make sure to mark SAFE locations without aggressive spawns.
+
 Please do not distribute outside of the guild!!!  
-
-## Disclaimer
-
-Do note that this macro puts requirements on you to have certain skills. I recommend having 2 dedicated harvesters focusing only on the important part. The harvest skill and the rest is utility.  
-
-All the skill requirements can easily be trained at NPC vendors. And 60 magery can quickly be trained in NPD by casting Lightning on anything (even yourself).  
-I really recommend using bonded pets, but it's not a requirement.
-
-*IF YOU CANT BOND PETS YOURSELF GET IN TOUCH WITH POINTLESS (ELAN DEFIAC, ILL DEFIAC, MADI DEFIAC) AND HE WILL HOOK YOU UP NO PROBLEM! OK? SWEET.*
 
 ## Requirements
 
 - 1xFully Marked Rune Tome (in bank, supports up to four)
 
 - A harvester with:  
-*50 Animal Lore/Taming*  
-*>1 Healing*  
-*60 Magery*  
+*60 Magery, recall of target*
 *70 Camping, if mining*
-*I also recommend having meditation for faster recovery*
 
 ### Recommended
 
+- 50 Animal Lore/Taming
+- >= 40 Healing
 - 3-5 x Slots Bonded Pets (Recommend Mucks at least at lvl 6 for regen, but it depends on where you mark as well. I ran it with 1xColossal Frog 1xMuck and 1xFamiliar too)
+- Whatever you can spare in meditation.
 
 ## Setup
 
@@ -66,3 +57,9 @@ This is the most time consuming part. If you already have the resources, changin
 - Use the highest tier pickaxe possible. I did/will do Iron->Gold->Agapite->Verite->Valo. You want success rates.
 
 - If you have Fortune this helps success rates and in turn better *oph*
+
+## Changelog
+
+### v.0.0.2
+
+- Removed requirements of taming, med, healing and made them recommendations, after input from Sodo.

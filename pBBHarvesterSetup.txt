@@ -1,5 +1,5 @@
 // ---------------------------------
-// pointless recall harvester setup 0.0.1
+// pointless recall harvester setup 0.0.2
 //
 // Don't AFK, look out for Owyn, say hello to people.
 // Be a positive change to recall miners.
@@ -14,25 +14,24 @@
 @unsetalias 'HARVEST_MODE_MINING'
 sysmsg "[pbb] Checking skills" 71
 if skill 'Magery' < 60
-  sysmsg "[pbb] Pretty sure I said 60 magery you lazy bastard." 38
+  sysmsg "[pbb] 60 magery required to reliably recall." 38
   stop
 else
   sysmsg "[pbb] Magery OK" 71
 endif
 if not skill 'Healing' > 0
-  sysmsg "[pbb] You will need healing for safety." 38
-  stop
+  sysmsg "[pbb] I recommend you add healing for effiency if you get casted on." 38
 else
   sysmsg "[pbb] Healing OK" 71
 endif
 if skill 'Animal Taming' < 50 or skill 'Animal Lore' < 50
-  sysmsg "[pbb] You need defense. Get 50 taming/lore, get bonded pets." 38
-  stop
+  sysmsg "[pbb] No taming? Be sure to have your runes in safe spots." 38
+  sys
 else
   sysmsg "[pbb] Taming/Lore OK" 71
-endif
-if followers < 3
-  sysmsg "[pbb] I strongly recommend more followers. But OK." 39
+  if followers < 3
+    sysmsg "[pbb] I strongly recommend more followers. But OK." 39
+  endif
 endif
 sysmsg "[pbb] Setting up harvester..." 11
 pause 600
@@ -44,7 +43,7 @@ if @findtype 0xf44 'any' 'backpack'
 elseif @findtype 0xe86 'any' 'backpack'
   sysmsg "[pbb] Setting harvester to mining." 81
   if skill 'Camping' < 70
-    sysmsg "[pbb] Please get 70 Camping. Good nodes can get 400+, 70 will give you 500 weight capacity"
+    sysmsg "[pbb] Please get 70 Camping. Good nodes can get 400+, 70 will give you 500 weight capacity. Anything less nullifies the advantage of recall mining."
     stop
   else
     sysmsg "[pbb] Got camping for mining!" 71
@@ -104,6 +103,6 @@ pause 600
 sysmsg "[pbb] Harvester will start in 5 seconds..." 91
 pause 5000
 sysmsg "[pbb] Happy farming. <3" 78
-useobject 'RestockContainer'
-useobject 'backpack'
+@useobject 'RestockContainer'
+@useobject 'backpack'
 playmacro "pBBHarvester"
