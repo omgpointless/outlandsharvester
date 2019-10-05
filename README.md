@@ -13,15 +13,15 @@ Please do not distribute outside of the guild!!!
 - 1xFully Marked Rune Tome (in bank, supports up to four)
 
 - A harvester with:  
-*60 Magery, recall of target*
+*60 Magery, recall of target*  
 *70 Camping, if mining*
 
 ### Recommended
 
 - 50 Animal Lore/Taming
-- >= 40 Healing
+- Whatever you can spare in Meditation.
+- Whatever you can spare in Healing
 - 3-5 x Slots Bonded Pets (Recommend Mucks at least at lvl 6 for regen, but it depends on where you mark as well. I ran it with 1xColossal Frog 1xMuck and 1xFamiliar too)
-- Whatever you can spare in meditation.
 
 ## Setup
 
